@@ -5,11 +5,15 @@
     <style>
        table
        {
-         border-width:1px;
+         margin:0px;
+         padding:0px;
+         border-width:0px;
          border-style:none;
        }
        td
        {
+         margin:0px;
+         padding:0px;
          width:30px;
          height:30px;
          border-width:1px;
@@ -23,137 +27,37 @@
          border-style:none;
          text-align:center;
        }
+       #resizable
+       {
+         margin:0px;
+         padding:0px;
+         width: 70px;
+         height: 70px;
+       }
+       ui-widget-content
+       {
+         margin:0px;
+         padding:0px;
+       }
     </style>
     <script type="text/javascript"
 	    src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js">
     </script>
-    <script>
-
-      var currCol = 1;
-      var currRow = 1;
-      
-      function addColumn() {
-        $('tr').append('<td id=c'+currCol+'></td>');
-        currCol++;
-      }
-
-      function addRow() {
-      var s = "<td id=c0></td>"
-      
-      for (var i = 1; i< currCol; i++) {
-        s = s + '<td id=c'+i+'></td>'
-      }
-			
-        $('table').append('<tr id=r'+currRow+'>'+s+'</tr>');
-        currRow++;
-      }
-						     
-      function removeColumn() {
-
-	for (var i = 0; i < currRow; i++) {
-	  var selector = "#r"+i + "> #c"+(currCol-1);
-          $(selector).remove();
-	}
-	currCol--;
-      }
-
-      function removeRow() {
-        $('tr:last').remove();
-	currRow--;
-      }
-
-      function createTable(n) {
-
- 	var table = []
-	for (var i = 0; i < currRow; i++) {
-	  table.push([]);
-	}
-
-	return table
-      }
-			    
-      function updateString() {
-
-        var table = createTable(currRow);
-			    
-        for (var i = 0; i < currRow; i++) {
-          for (var j = 0; j < currCol; j++) {
-	    var selector = "#r"+i + "> #c"+j + " > input";
-	    var value = $(selector).val();
-
-            if (typeof value === "undefined") {
-              value = "";
-	    }
-		
-	    table[i][j] = value;
-	  }
-	}
-
-        var output = "{";
-			      
-        for (var i = 0; i < currRow; i++) {
-	  output = output + "{";
-          for (var j = 0; j < currCol; j++) {
-	    var value = table[i][j]
-
-	    output = output + value;
-
-	    if (j + 1 < currCol) {
-              output = output + ",";  
-	    }
-	  }
-
-          output = output + "}"
-
-	  if (i + 1 < currRow) {
-              output = output + ",";  
-	    }
-	}
-			    
-        $('#output').text(output + "}");
-      }
-
-      function initialize() {
-        $(document).keydown(handleKeyPress);
-      }
-
-      var maxInput = 0
-			    
-      function handleKeyPress(e) {
-
-        if(e.which === 39 | e.which === 37 | e.which === 40 | e.which === 38) {
-	  $('td > input').remove();
-	}
-			    
-        /* Right */
-        if (e.which === 39)
-          addColumn();
-        /* Left */
-        if (e.which === 37)
-          removeColumn();
-	/* Down */
-        if (e.which === 40)
-	  addRow();
-	/* Up */
-        if (e.which === 38)
-	   removeRow();
-
-	updateString();
-
-	if(e.which === 39 | e.which === 37 | e.which === 40 | e.which === 38) {
-	  $('td').append('<input type="text">');
-	}
-      }
-
-      $(initialize);
+    <script type="text/javascript"
+	    src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js">
     </script>
+    <link rel="stylesheet" type="text/css"
+	  href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.1/themes/base/jquery-ui.css"/>
+    <script type="text/javascript" src="matrix.js"></script>
   </head
-  <body>
+     <body>
+    <div id="resizable" class="ui-widget-content">
     <table>
       <tr id="r0">
         <td id="c0"><input type="text"></td>
       </tr>
     </table>
+    </div>
     <span>
       Output: 
       <span id='output'></span>
